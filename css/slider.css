@@ -1,0 +1,25 @@
+.rotator 
+{
+position:relative;
+height:350px;
+display: none;
+}
+div.rotator ul li
+{
+margin-top: 45px;
+margin-left: -10px;
+float:left;
+position:absolute;
+list-style: none;
+}
+div.rotator ul li img 
+{
+border: 2px solid black;
+padding: 6px;
+background: #FFF;
+}
+div.rotator ul li.show
+{
+z-index:500
+}
+
