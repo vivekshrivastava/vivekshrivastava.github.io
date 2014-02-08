@@ -3,96 +3,124 @@
 <head>
 <meta charset="utf-8" />
 <title>Vivek Shrivastava | Portfolio</title>
-<link rel="stylesheet" type="text/css" href="style.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
+<script type="text/javascript" src="js/jq.js"></script>
+<link rel="stylesheet" type="text/css" href="css/slider.css">
+<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+
+<script type="text/javascript">
+function theRotator() 
+{
+	$('div.rotator ul li').css({opacity: 0.0});
+	$('div.rotator ul li:first').css({opacity: 1.0});
+	setInterval('rotate()',2000);
+}
+function rotate() 
+{	
+	var current = ($('div.rotator ul li.show')?  $('div.rotator ul li.show') : $('div.rotator ul li:first'));
+    if ( current.length == 0 ) current = $('div.rotator ul li:first');
+	var next = ((current.next().length) ? ((current.next().hasClass('show')) ? $('div.rotator ul li:first') :current.next()) : $('div.rotator ul li:first'));	
+	next.css({opacity: 0.0})
+	.addClass('show')
+	.animate({opacity: 1.0}, 2000);
+	current.animate({opacity: 0.0}, 2000)
+	.removeClass('show');	
+};
+$(document).ready(function() {		
+	theRotator();
+	$('div.rotator').fadeIn(2000);
+    $('div.rotator ul li').fadeIn(2000); 
+});
+</script>
+
 </head>
-<body>
-	<div id="header">
+
+		<div id="header">
+
 			<div id="logo">
-				<a href="index.html">Vivek Shrivastava</a><br>	&nbsp;&nbsp;Human Resource Professional	
+
+
+				<a href="index.html">Vivek Shrivastava</a><br>	
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Human Resource Professional	
 			</div>		
 			<ul>
 				<li class="selected"><a href="index.html"><span>home</span></a></li>
 				<li><a href="#"><span>about Vivek</span></a></li>
 				<li><a href="#"><span>services</span></a></li>
-				<li><a href="#"><span>blog</span></a></li>
+				<li><a href="blog.html"><span>blog</span></a></li>
 				<li><a href="#"><span>contact</span></a></li>			
 			</ul>
 	</div>
 	<div id="body">
+
 		<div class="header">
-			<div><br><br><br><br><br><br>
+			<div>
 				<div>
-				<p>
-					MBA-HR with 2.5 yrs exp in Generalist/Recruitment in IT, Non-IT and Analytics sectors. Currently working in a Data Analytics / Research Analytics company as Assistant Manager- HR, Recruiting for Data Scientists, Decision Scientist, Data Mining, Big Data, Hadoop, Mahout, Python. <br><br> R programming, Statisticians, Algorithm, Application Developers, Java, Android, Python, C, C++,C#, Database Testing Engineers, ETL, Database Warehousing, QA Engineers, UI/UX Designers, Graphic Designer, Software Developers, MySQL, JSON, Oracle, SQL, Salesforce Developers, Force.com, Android Developers, CRM, Cloud Computing etc from Top Institutions like IIT, IIM, ISI, DSE, MSE, NIIT, MIT, DU, JNU, or any Top 10 Colleges etc or from Analytics Industry.
-
-					</p>
-
-
-				</div>
-								<div id="homeimg"><img src="http://i57.tinypic.com/axjvy9.jpg" alt="" width="320" height="365" />	</div>	
+					<div class="rotator">
+					  <ul>
+					    <li class="show"> <a href="#">
+					    <img src='images/one.jpg' width='900' height='347'  /></a></li>
+					    <li>
+					    <a href="#">
+					    <img src='images/two.jpg' width='900' height='347'  /></a></li>
+					    <li>
+					    <a href="#">
+					    <img src='images/three.jpg' width='900' height='347'  /></a></li>
+					   </ul>
+					</div>
+					
+				</div>	
 
 			</div>
-		</div><br><br>
-		<div class="footer">
-			<div class="section">
-				<h3><a href="blog.html">JOBS</a></h3>	
-				<ul>
-					<li>
-						<p>This website template has been designed</p>	
-						<span>Sept 21, by Nullam | 99 Views | 69 Comments</span>		
-					</li>		
-					<li>
-						<p>by <a href="http://www.freewebsitetemplates.com/">Free Website Templates</a> for you, for free. You can replace all this text with your own text.</p>
-						<span>Sept 21, by Nullam | 99 Views | 69 Comments</span>				
-					</li>	
-					<li>
-						<p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>				
-						<span>Sept 21, by Nullam | 99 Views | 69 Comments</span>
-					</li>		
-				</ul>	
-			</div>
-		<div class="featured">
-			<ul>
-				<li>
-					<h3>If you're having problems editing this website template, then don't hesitate to ask for help on the <a href="http://www.freewebsitetemplates.com/forum">Forum</a>.</h3>		
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu augue vel dui cursus porta. Nulla sit amet tellus urna</p>		
-					<span>Sept 21, by Nullam | 99 Views | 69 Comments</span>
-				</li>		
-				<li>
-					<h3>Vestibulum tristique, dui a vestibulum blandit, mi elit laoreet nulla consequat nec quam</h3>
-					<img src="images/discussing.jpg" alt="" />
-					<p>Morbi non leo augue, et hendrerit lectus. Pellentesque ultricies sapien ornare ipsum tempor lobortis ullamcorper urna</p>
-					<span>Sept 21, by Nullam | 99 Views | 69 Comments</span>
-				</li>	
-			</ul>		
+
 		</div>
-		<div class="section">
-			<h3>Portfolio</h3>	
-			<ul class="news">
-				<li>
-					<p>You can remove any link to our</p>			
-				</li>		
-				<li>
-					<p>website from this website template, you're free to use</p>				
-				</li>	
-				<li>
-					<p>this website template without linking back to us.</p>							
-				</li>		
-				<li>
-					<p>lorem ipsum dolor sit amet</p>
-				</li>
-				<li>
-					<p>consectetur adipiscing nunc eu augue vel dui cursus</p>				
-				</li>
-			</ul>	
+		
+		<div class="footer">
+			<hr>
+		<div class="featured">
+			<p>
+				Vivek Shrivastava is MBA-HR with 2.5 yrs exp in Generalist/Recruitment in IT, Non-IT and Analytics sectors. He is currently working in a Data Analytics / Research Analytics company as Assistant Manager- HR, Recruiting for Data Scientists, Decision Scientist, Data Mining, Big Data, Hadoop, Mahout.
+
+				 <br><br>
+				 Python, R programming, Statisticians, Algorithm, Application Developers, Java, Android, Python, C, C++,C#, Database Testing Engineers, ETL, Database Warehousing, QA Engineers, UI/UX Designers, Graphic Designer, Software Developers
+				</p><br><br>
+				
+				<h3 align="center"><font color="green">Latest Jobs</font> Offered BY Vivek:</h3>
+				<br>
+				<p>
+					<a href="#">Data Scientist</a> | <a href="#">Python Developer</a> | <a href="#">Domain Analyst</a> | <a href="#">Business Analyst</a> |
+				<a href="#">Data Scientist</a> | <a href="#">Python Developer</a> | <a href="#">Domain Analyst</a> | <a href="#">Business Analyst</a> |</p>
+			</p>
+		</div>
+
+		<div class="section" align="center">
+			
+			<h4>What's New</h4>
+		<ul>
+			<li>
+				<a href="#">New Blog added: Why you should join a startup company?</a>
+			</li>
+			<li>
+				<a href="#">New Jobs added on Jobs Page. Check Now</a>
+			</li>
+			<li>
+				<a href="#">Got New Job In Innovaccer as Data Scientist Intern.</a>
+			</li>
+		</ul><br>
+		<h4>Total Website views</h4>	
+				<a href="http://www.hitwebcounter.com/how-to/how-to-what-is-free-blog-counter.php" target="_blank">
+				<img src="http://hitwebcounter.com/counter/counter.php?page=5272468&style=0010&nbdigits=5&type=page&initCount=1500" title="myweb tracking code" Alt="myweb tracking code"   border="0" >
+				</a><br/>
+			
 		</div>
 		</div>
 	</div>
 	</div>
 
 	<div id="footer">
+		<hr>
 		<div>
-			<p>&copy Copyright 2012. All rights reserved</p>
+			<p>&copy Copyright 2014. All rights reserved. This website is created by <a href="http://www.shivambansal.com">Shivam Bansal</a></p>
 		</div>
 	</div>
 </body>
