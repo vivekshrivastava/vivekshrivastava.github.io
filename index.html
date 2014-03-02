@@ -1,128 +1,281 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-<head>
-<meta charset="utf-8" />
-<title>Vivek Shrivastava | Portfolio</title>
-<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
-<script type="text/javascript" src="js/jq.js"></script>
-<link rel="stylesheet" type="text/css" href="css/slider.css">
-<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+	<head>
+		<title>Vivek Shrivastava</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600" rel="stylesheet" type="text/css" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-panels.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/font-awesome.min.css" />
+			<link rel="stylesheet" href="css/skel-noscript.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-wide.css" />
+		</noscript>
+	
+	</head>
+	<body>
 
-<script type="text/javascript">
-function theRotator() 
-{
-	$('div.rotator ul li').css({opacity: 0.0});
-	$('div.rotator ul li:first').css({opacity: 1.0});
-	setInterval('rotate()',2000);
-}
-function rotate() 
-{	
-	var current = ($('div.rotator ul li.show')?  $('div.rotator ul li.show') : $('div.rotator ul li:first'));
-    if ( current.length == 0 ) current = $('div.rotator ul li:first');
-	var next = ((current.next().length) ? ((current.next().hasClass('show')) ? $('div.rotator ul li:first') :current.next()) : $('div.rotator ul li:first'));	
-	next.css({opacity: 0.0})
-	.addClass('show')
-	.animate({opacity: 1.0}, 2000);
-	current.animate({opacity: 0.0}, 2000)
-	.removeClass('show');	
-};
-$(document).ready(function() {		
-	theRotator();
-	$('div.rotator').fadeIn(2000);
-    $('div.rotator ul li').fadeIn(2000); 
-});
-</script>
+		<!-- Header -->
+			<div id="header" class="skel-panels-fixed">
 
-</head>
+				<div class="top">
 
-		<div id="header">
+					<!-- Logo -->
+						<div id="logo">
+							<span class="image avatar48"><img src="images/vivek.jpg"></span>
+							<h1 id="title">Vivek Shrivastav</h1>
+							<span class="byline">Human Resource Professional</span>
+						</div>
 
-			<div id="logo">
+					<!-- Nav -->
+						<nav id="nav">
+							<!--
+							
+								Prologue's nav expects links in one of two formats:
+								
+								1. Hash link (scrolls to a different section within the page)
+								
+								   <li><a href="#foobar" id="foobar-link" class="skel-panels-ignoreHref"><span class="fa fa-whatever-icon-you-want">Foobar</span></a></li>
 
+								2. Standard link (sends the user to another page/site)
 
-				<a href="index.html">Vivek Shrivastava</a><br>	
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Human Resource Professional	
-			</div>		
-			<ul>
-				<li class="selected"><a href="index.html"><span>home</span></a></li>
-				<li><a href="#"><span>about Vivek</span></a></li>
-				<li><a href="#"><span>services</span></a></li>
-				<li><a href="blog.html"><span>blog</span></a></li>
-				<li><a href="#"><span>contact</span></a></li>			
-			</ul>
-	</div>
-	<div id="body">
+								   <li><a href="http://foobar.tld"><span class="fa fa-whatever-icon-you-want">Foobar</span></a></li>
+							
+							-->
+							<ul>
+								<li><a href="#top" id="top-link" class="skel-panels-ignoreHref"><span class="fa fa-home">Home</span></a></li>
+								<li><a href="#portfolio" id="portfolio-link" class="skel-panels-ignoreHref"><span class="fa fa-th">Portfolio</span></a></li>
+								<li><a href="#about" id="about-link" class="skel-panels-ignoreHref"><span class="fa fa-user">About</span></a></li>
+								<li><a href="#services" id="portfolio-link" class="skel-panels-ignoreHref"><span class="fa fa-th">Services</span></a></li>
+								<li><a href="#contact" id="contact-link" class="skel-panels-ignoreHref"><span class="fa fa-envelope">Contact</span></a></li>
+							</ul>
+						</nav>
+						
+				</div>
+				
+				<div class="bottom">
 
-		<div class="header">
-			<div>
-				<div>
-				<div class="rotator">
-					  <ul>
-					    <li class="show"> <a href="#">
-					    <img src='http://i58.tinypic.com/15g8oib.jpg' width='900' height='347'  /></a></li>
-					    <li>
-					    <a href="#">
-					    <img src='http://i58.tinypic.com/28mmsm9.jpg' width='900' height='347'  /></a></li>
-					    <li>
-					    <a href="#">
-					    <img src='http://i58.tinypic.com/2ilhlap.jpg' width='900' height='347'  /></a></li>
-					   </ul>
-					</div>
+					<!-- Social Icons -->
+					Vivek is also on Naukri.com &nbsp;&nbsp;&nbsp;
 					
-					
-				</div>	
-
+				
+				</div>
+			
 			</div>
 
-		</div>
-		
-		<div class="footer">
-			<hr>
-		<div class="featured">
-			<p>
-				Vivek Shrivastava is MBA-HR with 2.5 yrs exp in Generalist/Recruitment in IT, Non-IT and Analytics sectors. He is currently working in a Data Analytics / Research Analytics company as Assistant Manager- HR, Recruiting for Data Scientists, Decision Scientist, Data Mining, Big Data, Hadoop, Mahout.
+		<!-- Main -->
+			<div id="main">
+			
+				<!-- Intro -->
+					<section id="top" class="one">
+						<div class="container">
 
-				 <br><br>
-				 Python, R programming, Statisticians, Algorithm, Application Developers, Java, Android, Python, C, C++,C#, Database Testing Engineers, ETL, Database Warehousing, QA Engineers, UI/UX Designers, Graphic Designer, Software Developers
-				</p><br><br>
+							<a href="http://ineedchemicalx.deviantart.com/art/Moonscape-381829905" class="image featured"><img src='http://i58.tinypic.com/28mmsm9.jpg' height="300px" /></a>
+
+							<header>
+								<h2 class="alt">Welcome to official website of <b>Vivek Shrivastava</b>, Human Resource Professional
+								</h2>
+							</header>
+							
+							<p> Vivek is MBA-HR with 2.5 yrs experience in Generalist and Recruitment in IT, Non-IT and Analytics sectors. He is currently working in a Data Analytics and Research Analytics Firm as Assistant Manager - Human Resource.</p>
+
+							<footer>
+								<a href="http://mrvivekmba.blogspot.in/" class="button scrolly">Vivek's Blog</a>
+							</footer>
+
+						</div>
+					</section>
+					
+				<!-- Portfolio -->
+					<section id="portfolio" class="two">
+						<div class="container">
+					
+							<header>
+								<h2>Portfolio</h2>
+							</header>
+							
+							<p>Vivek's portfolio, Click to explore more about vivek's work.</p>
+						
+							<div class="row">
+								<div class="4u">
+									<article class="item">
+										<a href="http://ineedchemicalx.deviantart.com/art/A-million-suns-384369739" class="image full"><img src="images/pic02.jpg" alt="" /></a>
+										<header>
+											<h3>Ipsum Feugiat</h3>
+										</header>
+									</article>
+									<article class="item">
+										<a href="http://ineedchemicalx.deviantart.com/art/Mind-is-a-clear-stage-375431607" class="image full"><img src="images/pic03.jpg" alt="" /></a>
+										<header>
+											<h3>Rhoncus Semper</h3>
+										</header>
+									</article>
+								</div>
+								<div class="4u">
+									<article class="item">
+										<a href="http://ineedchemicalx.deviantart.com/art/You-really-got-me-345249340" class="image full"><img src="images/pic04.jpg" alt="" /></a>
+										<header>
+											<h3>Magna Nullam</h3>
+										</header>
+									</article>
+									<article class="item">
+										<a href="http://ineedchemicalx.deviantart.com/art/Ad-infinitum-354203162" class="image full"><img src="images/pic05.jpg" alt="" /></a>
+										<header>
+											<h3>Natoque Vitae</h3>
+										</header>
+									</article>
+								</div>
+								<div class="4u">
+									<article class="item">
+										<a href="http://ineedchemicalx.deviantart.com/art/Elysium-355393900" class="image full"><img src="images/pic06.jpg" alt="" /></a>
+										<header>
+											<h3>Dolor Penatibus</h3>
+										</header>
+									</article>
+									<article class="item">
+										<a href="http://ineedchemicalx.deviantart.com/art/Emperor-of-the-Stars-370265193" class="image full"><img src="images/pic07.jpg" alt="" /></a>
+										<header>
+											<h3>Orci Convallis</h3>
+										</header>
+									</article>
+								</div>
+							</div>
+
+						</div>
+					</section>
+
+				<!-- About Me -->
+					<section id="about" class="three">
+						<div class="container">
+
+							<header>
+								<h2>About Vivek</h2>
+							</header>
+
+							
+							<p>MBA-HR with 2.5 yrs exp in Generalist/Recruitment in IT, Non-IT and Analytics sectors. Currently working in a Data Analytics / Research Analytics company as Assistant Manager- HR, Recruiting for Data Scientists, Decision Scientist, Data Mining, Big Data, Hadoop, Mahout, Python, R programming, Statisticians, Algorithm, Application Developers, Java, Android, Python, C, C++,C#, Database Testing Engineers, ETL, Database Warehousing, QA Engineers, UI/UX Designers, Graphic Designer, Software Developers, MySQL, JSON, Oracle, SQL, Salesforce Developers, Force.com, Android Developers, CRM, Cloud Computing etc from Top Institutions like IIT, IIM, ISI, DSE, MSE, NIIT, MIT, DU, JNU, or any Top 10 Colleges etc or from Analytics Industry.</p>
+							<a href="#">Presentations</a> | <a href="#">Gallery</a> | <a href="#">Blog</a>
+
+						</div>
+					</section>
+			
+				<!-- Contact -->
+					<section id="services" class="two">
+						<div class="container">
+					
+							<header>
+								<h2>Services</h2>
+							</header>
+							
+							<p>Vivek offers a lot of services. Contact Vivek for specific purpose.</p>
+						
+							<div class="row">
+								<div class="4u">
+									<article class="item">
+										<font><i class="fa fa-video-camera fa-5x"></i></font>
+										<header>
+											<h3>Guest Lectures</h3>
+										</header>
+									</article>
+									<article class="item">
+										<font><i class="fa fa-male fa-5x"></i></font>
+										<header>
+											<h3>Training</h3>
+										</header>
+									</article>
+									
+								</div>
+								<div class="4u">
+									<article class="item">
+										<font><i class="fa fa-pencil-square-o fa-5x"></i></font>
+										<header>
+											<h3>Content Writing</h3>
+										</header>
+									</article>
+									<article class="item">
+										<font><i class="fa fa-folder-open fa-5x"></i></font>
+										<header>
+											<h3>Recruitment</h3>
+										</header>
+									</article>
+								</div>
+								<div class="4u">
+									<article class="item">
+										<font><i class="fa fa-cloud-download fa-5x"></i></font>
+										<header>
+											<h3>Website Development</h3>
+										</header>
+									</article>
+									<article class="item">
+										<font><i class="fa fa-sitemap fa-5x"></i></font>
+										<header>
+											<h3>Socail Networking</h3>
+										</header>
+									</article>
+								</div>
+								
+								
+							</div>
+
+						</div>
+					</section>
+
+
+					<section id="contact" class="four">
+						<div class="container">
+
+							<header>
+								<h2>Connect with Vivek</h2><br><br>
+								<i class="fa fa-facebook fa-3x"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+								<i class="fa fa-linkedin fa-3x"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+								<i class="fa fa-twitter fa-3x"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+								<i class="fa fa-youtube fa-3x"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+								<i class="fa fa-google-plus fa-3x"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+							</header>
+
+
+								<ul>
+						<li>mr.vivekmba@gmail.com</li>
+				<li>9873246043</li>
+					</ul>
+							<p></p>
+							
+							<form method="post" action="#">
+								<div class="row half">
+									<div class="6u"><input type="text" class="text" name="name" placeholder="Name" /></div>
+									<div class="6u"><input type="text" class="text" name="email" placeholder="Email" /></div>
+								</div>
+								<div class="row half">
+									<div class="12u">
+										<textarea name="message" placeholder="Message"></textarea>
+									</div>
+								</div>
+								<div class="row">
+									<div class="12u">
+										<a href="#" class="button submit">Send Message</a>
+									</div>
+								</div>
+							</form>
+
+						</div>
+					</section>
+			
+			</div>
+
+		<!-- Footer -->
+			<div id="footer">
 				
-				<h3 align="center"><font color="green">Latest Jobs</font> Offered BY Vivek:</h3>
-				<br>
-				<p>
-					<a href="#">Data Scientist</a> | <a href="#">Python Developer</a> | <a href="#">Domain Analyst</a> | <a href="#">Business Analyst</a> |
-				<a href="#">Data Scientist</a> | <a href="#">Python Developer</a> | <a href="#">Domain Analyst</a> | <a href="#">Business Analyst</a> |</p>
-			</p>
-		</div>
+				<!-- Copyright -->
+					<div class="copyright">
+						<p>&copy; 2014 vivekshrivastav.in All rights reserved.</p>					
+					</div>
+				
+			</div>
 
-		<div class="section" align="center">
-			
-			<h4>What's New</h4>
-		<ul>
-			<li>
-				<a href="#">New Blog added: Why you should join a startup company?</a>
-			</li>
-			<li>
-				<a href="#">New Jobs added on Jobs Page. Check Now</a>
-			</li>
-			<li>
-				<a href="#">Got New Job In Innovaccer as Data Scientist Intern.</a>
-			</li>
-		</ul><br>
-		<h4>Total Website views</h4>	
-				<a href="http://www.hitwebcounter.com/how-to/how-to-what-is-free-blog-counter.php" target="_blank">
-				<img src="http://hitwebcounter.com/counter/counter.php?page=5272468&style=0010&nbdigits=5&type=page&initCount=1500" title="myweb tracking code" Alt="myweb tracking code"   border="0" >
-				</a><br/>
-			
-		</div>
-		</div>
-	</div>
-	</div>
-
-	<div id="footer">
-		<hr>
-		<div>
-			<p>&copy Copyright 2014. All rights reserved. This website is created by <a href="http://www.shivambansal.com">Shivam Bansal</a></p>
-		</div>
-	</div>
-</body>
+	</body>
 </html>
