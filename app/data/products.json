@@ -1,0 +1,26 @@
+{
+  "_note": "SAMPLE catalogue — replace titles, prices and images with your actual stock. 'image' may be an emoji or a path such as 'images/diary.jpg'.",
+  "categories": ["Books", "Bare Acts", "Merchandise"],
+  "products": [
+    { "id": "bk-bail", "category": "Books", "title": "Bail & Anticipatory Bail under BNSS — A Practitioner's Guide", "author": "Vivekanand Law Firm", "price": 495, "mrp": 595, "image": "📘", "inStock": true,
+      "description": "Concise guide to S. 478–483 BNSS with the leading Supreme Court rulings, drafting formats and a checklist for bail hearings." },
+    { "id": "bk-138", "category": "Books", "title": "Cheque Bounce Cases — Notice to Judgment", "author": "Vivekanand Law Firm", "price": 349, "mrp": 399, "image": "📗", "inStock": true,
+      "description": "Step-by-step handbook on S. 138–148 of the Negotiable Instruments Act with timelines, notice and complaint formats." },
+    { "id": "bk-family", "category": "Books", "title": "Maintenance & Matrimonial Remedies — A Citizen's Handbook", "author": "Vivekanand Law Firm", "price": 299, "mrp": 349, "image": "📙", "inStock": true,
+      "description": "Plain-language explanation of maintenance, divorce, custody and DV Act remedies." },
+    { "id": "ba-bns", "category": "Bare Acts", "title": "Bharatiya Nyaya Sanhita, 2023 (Bare Act)", "author": "Bare Act", "price": 250, "mrp": 250, "image": "📕", "inStock": true,
+      "description": "Pocket edition with comparative table to the IPC." },
+    { "id": "ba-bnss", "category": "Bare Acts", "title": "Bharatiya Nagarik Suraksha Sanhita, 2023 (Bare Act)", "author": "Bare Act", "price": 350, "mrp": 350, "image": "📕", "inStock": true,
+      "description": "Pocket edition with comparative table to the CrPC." },
+    { "id": "ba-bsa", "category": "Bare Acts", "title": "Bharatiya Sakshya Adhiniyam, 2023 (Bare Act)", "author": "Bare Act", "price": 180, "mrp": 180, "image": "📕", "inStock": true,
+      "description": "Pocket edition with comparative table to the Indian Evidence Act." },
+    { "id": "mr-diary", "category": "Merchandise", "title": "Advocate's Court Diary 2027", "author": "VLF Merchandise", "price": 399, "mrp": 499, "image": "📓", "inStock": true,
+      "description": "Hard-bound date-wise diary with court holiday list and case-tracking pages." },
+    { "id": "mr-band", "category": "Merchandise", "title": "Advocate's Bands (Set of 2)", "author": "VLF Merchandise", "price": 149, "mrp": 199, "image": "🎀", "inStock": true,
+      "description": "Premium cotton bands, starched finish." },
+    { "id": "mr-mug", "category": "Merchandise", "title": "Scales of Justice Coffee Mug", "author": "VLF Merchandise", "price": 299, "mrp": 349, "image": "☕", "inStock": true,
+      "description": "Ceramic 330 ml mug with the firm's emblem." },
+    { "id": "mr-pen", "category": "Merchandise", "title": "Executive Pen with Firm Emblem", "author": "VLF Merchandise", "price": 249, "mrp": 299, "image": "🖊️", "inStock": true,
+      "description": "Metal-body roller pen in a gift box." }
+  ]
+}

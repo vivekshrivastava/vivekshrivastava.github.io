@@ -1,0 +1,35 @@
+{
+  "updates": [
+    { "id": "new-criminal-laws", "date": "2024-07-01", "tag": "Criminal Law",
+      "title": "The three new criminal laws are now in force",
+      "summary": "BNS, BNSS and BSA replaced the IPC, CrPC and Evidence Act with effect from 1 July 2024.",
+      "body": [
+        "The Bharatiya Nyaya Sanhita, 2023, the Bharatiya Nagarik Suraksha Sanhita, 2023 and the Bharatiya Sakshya Adhiniyam, 2023 came into force on 1 July 2024, replacing the Indian Penal Code, 1860, the Code of Criminal Procedure, 1973 and the Indian Evidence Act, 1872 respectively.",
+        "Offences committed before 1 July 2024 continue to be governed by the IPC. Investigations, inquiries and trials pending on that date are saved by S. 531 BNSS.",
+        "Key procedural features include Zero FIR and e-FIR (S. 173 BNSS), videography of search and seizure, and timelines for investigation and judgment."
+      ] },
+    { "id": "arrest-safeguards", "date": "2024-08-15", "tag": "Know Your Rights",
+      "title": "Arrest in offences punishable up to 7 years — what the law requires",
+      "summary": "The police must satisfy the necessity of arrest; a notice of appearance is the norm.",
+      "body": [
+        "In Arnesh Kumar v. State of Bihar, (2014) 8 SCC 273, the Supreme Court held that arrest in offences punishable with imprisonment up to seven years cannot be routine; the officer must record reasons satisfying the conditions now contained in S. 35(1)(b) BNSS.",
+        "Where arrest is not required, a notice of appearance must be issued under S. 35(3) BNSS [S. 41A CrPC]. Magistrates must not authorise detention mechanically.",
+        "Non-compliance can expose the officer to departmental action and contempt."
+      ] },
+    { "id": "cheque-30-days", "date": "2024-09-10", "tag": "NI Act",
+      "title": "Cheque dishonoured? The 30-day rule you must not miss",
+      "summary": "The demand notice must be sent within 30 days of receiving the bank's return memo.",
+      "body": [
+        "Under proviso (b) to S. 138 of the Negotiable Instruments Act, the payee must make a written demand within 30 days of receiving information of dishonour from the bank.",
+        "The drawer then has 15 days from receipt of the notice to pay. A complaint filed before the 15 days expire is premature — Yogendra Pratap Singh v. Savitri Pandey, (2014) 10 SCC 713.",
+        "The complaint must be filed within one month of the cause of action (S. 142(1)(b)). Use the Cheque Bounce calculator under “Tools” to work out your dates."
+      ] },
+    { "id": "anticipatory-bail", "date": "2024-10-05", "tag": "Bail",
+      "title": "Anticipatory bail under S. 482 BNSS is not time-bound",
+      "summary": "Protection ordinarily continues till the end of trial unless limited by the court.",
+      "body": [
+        "A Constitution Bench in Sushila Aggarwal v. State (NCT of Delhi), (2020) 5 SCC 1, held that protection granted under S. 438 CrPC (now S. 482 BNSS) need not be limited to a fixed period and does not end at the filing of the charge-sheet, unless the court for specific reasons so directs.",
+        "Applications may be moved before the Sessions Court or the High Court, which have concurrent jurisdiction."
+      ] }
+  ]
+}

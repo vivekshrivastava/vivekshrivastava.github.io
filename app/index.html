@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vivekanand Law Firm</title>
+  <meta name="description" content="Vivekanand Law Firm — Criminal, Civil, Family, NDPS, SC/ST, POCSO and NI Act matters. Supreme Court, Patna High Court and Courts in Bihar.">
+  <meta name="theme-color" content="#0f2341">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="#/" class="brand" aria-label="Home">
+      <img src="icons/icon.svg" alt="" width="34" height="34">
+      <span><strong>Vivekanand</strong> Law Firm</span>
+    </a>
+    <a href="#/cart" class="cart-btn" aria-label="Cart">🛒<span id="cart-count" hidden>0</span></a>
+  </header>
+
+  <main id="view" tabindex="-1"></main>
+
+  <nav class="tabbar" aria-label="Main">
+    <a href="#/" data-tab="home"><span>🏠</span>Home</a>
+    <a href="#/practice" data-tab="practice"><span>⚖️</span>Services</a>
+    <a href="#/consult" data-tab="consult" class="primary"><span>📅</span>Consult</a>
+    <a href="#/store" data-tab="store"><span>📚</span>Store</a>
+    <a href="#/more" data-tab="more"><span>☰</span>More</a>
+  </nav>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

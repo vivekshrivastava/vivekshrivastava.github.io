@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Scales of justice, drawn on the 108dp adaptive-icon grid (safe zone 66dp). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group android:translateX="24" android:translateY="24" android:scaleX="0.1171875" android:scaleY="0.1171875">
+        <path android:strokeColor="#C9A227" android:strokeWidth="10"
+            android:pathData="M256,60a196,196 0,1 1,0 392a196,196 0,1 1,0 -392z" />
+        <path android:strokeColor="#C9A227" android:strokeWidth="14" android:strokeLineCap="round" android:strokeLineJoin="round"
+            android:pathData="M256,118v248 M150,168h212 M196,382h120 M150,168l-46,108h92z M362,168l-46,108h92z" />
+        <path android:fillColor="#C9A227"
+            android:pathData="M256,104a14,14 0,1 1,0 28a14,14 0,1 1,0 -28z M104,276a46,22 0,0 0,92 0z M316,276a46,22 0,0 0,92 0z" />
+    </group>
+</vector>
