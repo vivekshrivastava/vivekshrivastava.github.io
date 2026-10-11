@@ -31,16 +31,19 @@ val syncWebApp = tasks.register<SyncWebApp>("syncWebApp") {
 
 val keystorePath: String? = System.getenv("ANDROID_KEYSTORE_PATH")
 
+// Every CI build gets a higher version code, as Google Play requires for each upload.
+val buildNumber: Int = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
+
 android {
     namespace = "in.vivekshrivastava.lawfirm"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "in.vivekshrivastava.lawfirm"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        targetSdk = 36
+        versionCode = buildNumber
+        versionName = "1.0.$buildNumber"
     }
 
     signingConfigs {

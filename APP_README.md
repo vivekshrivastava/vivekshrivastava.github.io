@@ -28,9 +28,8 @@ Changes to the two JSON files reach installed apps automatically (once on the we
 GitHub → **Actions** → *Android app* → latest run → download **vivekanand-law-debug-apk**. Install on a phone to test.
 
 ## Publishing on Google Play
-1. Create a Play Console developer account.
-2. Create an upload key: `keytool -genkeypair -v -keystore release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload`
-3. Add repo secrets (Settings → Secrets → Actions): `ANDROID_KEYSTORE_BASE64` (`base64 -w0 release.jks`), `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`.
-4. Re-run the workflow and upload the `.aab` from **vivekanand-law-release**.
-5. Privacy policy URL: `https://www.vivekshrivastava.in/app/privacy.html`.
-6. Bump `versionCode` in `android/app/build.gradle.kts` for every new release.
+1. Add the four `ANDROID_KEY*` secrets in **Settings → Secrets and variables → Actions** (values are in the private key file you were given; never commit the key).
+2. **Actions → Android app → Run workflow**, then download **vivekanand-law-play-store-release** (`.aab`).
+3. Follow `android/play-store/PLAY_STORE.md` for the listing text, images, data-safety answers and release steps.
+
+The version code increases automatically with each build. Keep `vivekanand-upload-key.jks` and its password safe (password manager + offline copy).

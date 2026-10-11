@@ -20,7 +20,7 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Build debug APK
+      - name: Build debug APK (for testing on a phone)
         working-directory: android
         run: ./gradlew --no-daemon assembleDebug
 
@@ -29,22 +29,36 @@ jobs:
           name: vivekanand-law-debug-apk
           path: android/app/build/outputs/apk/debug/*.apk
 
-      - name: Build signed release (APK + Play Store bundle)
+      - name: Decode upload key
         if: env.HAS_KEYSTORE == 'true'
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+
+      # Without the key secrets this still runs (unsigned) so release problems show up early.
+      - name: Build release (Play Store bundle + APK)
         working-directory: android
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: ./gradlew --no-daemon bundleRelease assembleRelease
+
+      - name: Verify signature
+        if: env.HAS_KEYSTORE == 'true'
         run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/release.jks"
-          export ANDROID_KEYSTORE_PATH="$RUNNER_TEMP/release.jks"
-          ./gradlew --no-daemon assembleRelease bundleRelease
+          APKSIGNER="$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)/apksigner"
+          "$APKSIGNER" verify --print-certs android/app/build/outputs/apk/release/*.apk
+          jarsigner -verify android/app/build/outputs/bundle/release/*.aab | tail -1
+
+      - name: Note missing key
+        if: env.HAS_KEYSTORE != 'true'
+        run: echo "::notice::Release built UNSIGNED. Add the ANDROID_KEYSTORE_* secrets to get a Play Store bundle."
 
       - uses: actions/upload-artifact@v4
         if: env.HAS_KEYSTORE == 'true'
         with:
-          name: vivekanand-law-release
+          name: vivekanand-law-play-store-release
           path: |
-            android/app/build/outputs/apk/release/*.apk
             android/app/build/outputs/bundle/release/*.aab
+            android/app/build/outputs/apk/release/*.apk
