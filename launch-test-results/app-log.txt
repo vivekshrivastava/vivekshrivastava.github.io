@@ -1,0 +1,6 @@
+--------- beginning of main
+10-15 18:24:15.591  3459  3459 I VivekanandLaw: Page loaded: https://appassets.androidplatform.net/assets/www/index.html
+10-15 18:24:15.881  3459  3459 I VivekanandLaw: Page loaded: https://appassets.androidplatform.net/assets/www/index.html
+10-15 18:24:35.689  3459  3459 I VivekanandLaw: Page loaded: https://appassets.androidplatform.net/assets/www/index.html#/store
+10-15 18:24:49.635  3459  3459 I VivekanandLaw: Page loaded: https://appassets.androidplatform.net/assets/www/index.html#/practice
+10-15 18:24:54.117  3459  3459 I VivekanandLaw: Page loaded: https://appassets.androidplatform.net/assets/www/index.html#/store
