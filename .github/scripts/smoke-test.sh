@@ -24,9 +24,21 @@ alive() { adb shell pidof "$PKG" >/dev/null || { echo "::error::App is not runni
 adb install -r "$APK" || { echo "::error::Install failed"; exit 1; }
 adb logcat -c
 adb shell am start -W -n "$PKG/.MainActivity"
-sleep 20
+
+# The app must report that its page loaded (logged by MainActivity) within 90 seconds.
+loaded=""
+for i in $(seq 1 45); do
+  sleep 2
+  if adb logcat -d -s "VivekanandLaw:V" | grep -q "Page loaded"; then loaded=yes; break; fi
+  if adb logcat -d -s "VivekanandLaw:V" | grep -q "Page failed"; then break; fi
+done
+sleep 8
 shot 1-first-launch
 alive "launch"
+adb logcat -d -s "VivekanandLaw:V" > "$OUT/app-log.txt"
+cat "$OUT/app-log.txt"
+if [ -z "$loaded" ]; then echo "::error::The app's page did not finish loading"; exit 1; fi
+if grep -q "JS ERROR" "$OUT/app-log.txt"; then echo "::error::JavaScript error in the app"; exit 1; fi
 
 tap_text "I agree" && shot 2-home
 alive "accepting disclaimer"
@@ -38,5 +50,6 @@ alive "navigation and back button"
 
 adb logcat -d > "$OUT/logcat.txt"
 if grep -q "FATAL EXCEPTION" "$OUT/logcat.txt"; then echo "::error::App crashed"; exit 1; fi
-if grep -qi "Uncaught" "$OUT/logcat.txt"; then echo "::warning::JavaScript error in logcat"; grep -i "Uncaught" "$OUT/logcat.txt" | head; fi
+adb logcat -d -s "VivekanandLaw:V" > "$OUT/app-log.txt"
+if grep -q "JS ERROR" "$OUT/app-log.txt"; then echo "::error::JavaScript error in the app"; cat "$OUT/app-log.txt"; exit 1; fi
 echo "Launch test passed"
