@@ -116,24 +116,3 @@ jobs:
         with:
           name: launch-test-results
           path: launch-test-results
-
-  # TEMPORARY: hands the unsigned bundle and launch-test results to the release
-  # session via the ci-outputs branch. Removed once the bundle has been signed.
-  handoff:
-    needs: [build, launch-test]
-    if: always() && needs.build.result == 'success' && github.ref == 'refs/heads/claude/vivekanand-law-firm-android-ysllcr'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          path: out
-      - name: Push outputs to ci-outputs branch
-        working-directory: out
-        run: |
-          echo "launch-test: ${{ needs.launch-test.result }}" > RESULT.txt
-          git init -q -b ci-outputs
-          git add -A
-          git -c user.name=github-actions -c user.email=github-actions@users.noreply.github.com commit -qm "CI outputs for run ${{ github.run_number }}"
-          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ci-outputs
