@@ -2,7 +2,7 @@ name: Android app
 
 on:
   push:
-    paths: ["app/**", "android/**", ".github/workflows/android.yml"]
+    paths: ["app/**", "android/**", ".github/workflows/android.yml", ".github/scripts/**"]
   workflow_dispatch:
 
 jobs:
@@ -51,10 +51,6 @@ jobs:
           "$APKSIGNER" verify --print-certs android/app/build/outputs/apk/release/*.apk
           jarsigner -verify android/app/build/outputs/bundle/release/*.aab | tail -1
 
-      - name: Note missing key
-        if: env.HAS_KEYSTORE != 'true'
-        run: echo "::notice::Release built UNSIGNED. Add the ANDROID_KEYSTORE_* secrets to get a Play Store bundle."
-
       - uses: actions/upload-artifact@v4
         if: env.HAS_KEYSTORE == 'true'
         with:
@@ -62,3 +58,81 @@ jobs:
           path: |
             android/app/build/outputs/bundle/release/*.aab
             android/app/build/outputs/apk/release/*.apk
+
+      - name: Keep unsigned bundle
+        if: env.HAS_KEYSTORE != 'true'
+        run: echo "::notice::Release built UNSIGNED. Add the ANDROID_KEYSTORE_* secrets to get a signed Play Store bundle."
+
+      - uses: actions/upload-artifact@v4
+        if: env.HAS_KEYSTORE != 'true'
+        with:
+          name: vivekanand-law-unsigned-release
+          path: android/app/build/outputs/bundle/release/*.aab
+
+      # The same minified release code, signed with the throwaway debug key so the
+      # launch test can install it. Never upload this APK to Play.
+      - name: Build release APK for launch test
+        if: env.HAS_KEYSTORE != 'true'
+        working-directory: android
+        env:
+          SIGN_RELEASE_WITH_DEBUG_KEY: "true"
+        run: ./gradlew --no-daemon assembleRelease
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: launch-test-apk
+          path: android/app/build/outputs/apk/release/*.apk
+
+  launch-test:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: launch-test-apk
+          path: apk
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Install, open and tap through the app on an Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          script: .github/scripts/smoke-test.sh "$(ls apk/*.apk | head -1)" launch-test-results
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: launch-test-results
+          path: launch-test-results
+
+  # TEMPORARY: hands the unsigned bundle and launch-test results to the release
+  # session via the ci-outputs branch. Removed once the bundle has been signed.
+  handoff:
+    needs: [build, launch-test]
+    if: always() && needs.build.result == 'success' && github.ref == 'refs/heads/claude/vivekanand-law-firm-android-ysllcr'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+      - name: Push outputs to ci-outputs branch
+        working-directory: out
+        run: |
+          echo "launch-test: ${{ needs.launch-test.result }}" > RESULT.txt
+          git init -q -b ci-outputs
+          git add -A
+          git -c user.name=github-actions -c user.email=github-actions@users.noreply.github.com commit -qm "CI outputs for run ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ci-outputs

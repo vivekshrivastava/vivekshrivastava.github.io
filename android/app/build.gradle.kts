@@ -31,6 +31,9 @@ val syncWebApp = tasks.register<SyncWebApp>("syncWebApp") {
 
 val keystorePath: String? = System.getenv("ANDROID_KEYSTORE_PATH")
 
+// CI launch test only: lets the minified release build be installed on an emulator.
+val signReleaseWithDebugKey = System.getenv("SIGN_RELEASE_WITH_DEBUG_KEY") == "true"
+
 // Every CI build gets a higher version code, as Google Play requires for each upload.
 val buildNumber: Int = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
 
@@ -62,7 +65,11 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
-            if (keystorePath != null) signingConfig = signingConfigs.getByName("release")
+            if (keystorePath != null) {
+                signingConfig = signingConfigs.getByName("release")
+            } else if (signReleaseWithDebugKey) {
+                signingConfig = signingConfigs.getByName("debug")
+            }
         }
     }
 
