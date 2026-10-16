@@ -7,7 +7,7 @@ spec = {
   "align": "left" | "center",              # optional, default per style
   "motif": "land|clock|phone|home|money|school|bag|book",   # S5 / S8
   "pages": [                                # 1 page = single image, 2-10 = carousel
-     {"headline": str, "subline": str, "tag": str, "footer": str, "hero": str (S6 only)}
+     {"headline": str, "subline": str, "tag": str, "hero": str (S6 only), "note": str (optional)}
      # carousel inner pages may use "body" instead of "subline" and "num" like "3/8"
   ]
 }
@@ -89,6 +89,44 @@ def tag_in_box(draw, x, y, w, h, text, color, weight='700', size=30, align='cent
         lx = x + (w - tw) / 2 if align == 'center' else x + 24
         draw.text((lx, ty + i * step), l, font=f, fill=hexc(color))
 
+
+
+# ---------------------------------------------------------------- signature bar
+SIG_NAME = "अधिवक्ता विवेकानंद"
+SIG_WEB = "www.vivekanandlawfirm.com"
+SIG_NOTE = "कानूनी जानकारी, कानूनी सलाह नहीं"
+SIG_TOP = 1160      # top of the portrait
+SIG_SIZE = 130      # portrait diameter
+_portrait = None
+
+
+def portrait():
+    global _portrait
+    if _portrait is None:
+        import os
+        p = os.path.join(os.path.dirname(FONT_DIR.rstrip('/')), 'portrait.png')
+        _portrait = Image.open(p).convert('RGBA') if os.path.exists(p) else False
+    return _portrait
+
+
+def sig_bar(img, d, x, cols, divider=None, divider_w=None, note=None, top=None):
+    """Elegant signature: gold-ringed portrait, name, website, one-line note."""
+    name_c, web_c, note_c, ring_c = cols
+    T = top or SIG_TOP
+    if divider:
+        d.rectangle([x, T - 28, x + (divider_w or (W - 2 * x)), T - 26], fill=hexc(divider))
+    pr = portrait()
+    tx = x
+    if pr:
+        ring = 4
+        d.ellipse([x, T, x + SIG_SIZE, T + SIG_SIZE], fill=hexc(ring_c))
+        inner = SIG_SIZE - 2 * (ring + 2)
+        ph = pr.resize((inner, inner), Image.LANCZOS)
+        img.paste(ph, (x + ring + 2, T + ring + 2), ph)
+        tx = x + SIG_SIZE + 30
+    d.text((tx, T + 4), SIG_NAME, font=F('700', 38), fill=hexc(name_c))
+    d.text((tx, T + 56), SIG_WEB, font=F('600', 29), fill=hexc(web_c))
+    d.text((tx, T + 98), note or SIG_NOTE, font=F('400', 23), fill=hexc(note_c))
 
 # ---------------------------------------------------------------- motifs (wordless)
 def motif(draw, kind, cx, cy, s, c1, c2, c3, line_only=False):
@@ -189,10 +227,12 @@ def render_page(st, pg, align, motif_kind, carousel, idx):
     d = ImageDraw.Draw(img)
     head = pg.get('headline', '')
     sub = pg.get('subline') or pg.get('body', '')
-    tag, foot, num, hero = pg.get('tag', ''), pg.get('footer', ''), pg.get('num', ''), pg.get('hero', '')
+    tag, num, hero = pg.get('tag', ''), pg.get('num', ''), pg.get('hero', '')
+    note = pg.get('note')  # optional replacement for the one-line note in the signature
     inner = carousel and idx > 0  # cover keeps full look
     M = 92  # side margin
     TW = W - 2 * M
+    GOLD = '#C9A54C'
 
     def number(col):
         if num:
@@ -202,14 +242,13 @@ def render_page(st, pg, align, motif_kind, carousel, idx):
     if st == 'S1':
         d.rectangle([0, 0, W, H], fill=hexc('#0E1B33'))
         d.rectangle([0, 0, 22, H], fill=hexc('#A6303E'))
-        d.rectangle([M, 210, M + 130, 222], fill=hexc('#A6303E'))
-        y = block(d, M, 270, TW, head, '800', 96, '#FFFFFF', align, 4, 1.3)
-        block(d, M, y + 40, TW, sub, '400', 46, '#BEC8DA', align, 6 if inner else 4, 1.42)
+        d.rectangle([M, 190, M + 130, 202], fill=hexc('#A6303E'))
+        y = block(d, M, 250, TW, head, '800', 94, '#FFFFFF', align, 4, 1.3)
+        block(d, M, y + 36, TW, sub, '400', 44, '#BEC8DA', align, 6 if inner else 4, 1.42)
         if tag:
-            pill(d, M, 1010, TW, 96, fill='#A6303E', r=20)
-            tag_in_box(d, M, 1010, TW, 96, tag, '#FFFFFF')
-        d.rectangle([M, 1190, W - M, 1192], fill=hexc('#3A4A6B'))
-        block(d, M, 1215, TW, foot, '400', 28, '#BEC8DA', align, 2, 1.3, 22)
+            pill(d, M, 1006, TW, 92, fill='#A6303E', r=20)
+            tag_in_box(d, M, 1006, TW, 92, tag, '#FFFFFF')
+        sig_bar(img, d, M, ('#FFFFFF', '#E6C77A', '#BEC8DA', GOLD), divider='#2B3B5C', note=note)
         number('#BEC8DA')
     elif st == 'S2':
         d.rectangle([0, 0, W, H], fill=hexc('#F4EEE2'))
@@ -217,108 +256,108 @@ def render_page(st, pg, align, motif_kind, carousel, idx):
         d.line([(60, 60), (170, 60)], fill=hexc('#C2892B'), width=10)
         d.line([(W - 60, H - 60), (W - 60, H - 170)], fill=hexc('#C2892B'), width=10)
         d.line([(W - 60, H - 60), (W - 170, H - 60)], fill=hexc('#C2892B'), width=10)
-        y = block(d, M, 250, TW, head, '700', 92, '#1F2633', align, 4, 1.32)
+        y = block(d, M, 230, TW, head, '700', 90, '#1F2633', align, 4, 1.32)
         rx = M if align == 'left' else (W - 160) // 2
         d.rectangle([rx, y + 30, rx + 160, y + 40], fill=hexc('#C2892B'))
-        block(d, M, y + 80, TW, sub, '400', 46, '#3B4252', align, 6 if inner else 4, 1.45)
+        block(d, M, y + 80, TW, sub, '400', 44, '#3B4252', align, 6 if inner else 4, 1.45)
         if tag:
-            pill(d, M, 1020, TW, 96, outline='#1F2633', r=6, width=3)
-            tag_in_box(d, M, 1020, TW, 96, tag, '#1F2633', '600')
-        block(d, M, 1180, TW, foot, '400', 28, '#5A5F69', align, 2, 1.3, 22)
+            pill(d, M, 1000, TW, 92, outline='#1F2633', r=6, width=3)
+            tag_in_box(d, M, 1000, TW, 92, tag, '#1F2633', '600')
+        sig_bar(img, d, M, ('#1F2633', '#A87420', '#5A5F69', '#C2892B'), divider='#D9CDB4', divider_w=720, note=note)
         number('#C2892B')
     elif st == 'S3':
         d.rectangle([0, 0, W, H], fill=hexc('#A6303E'))
-        y = block(d, M, 150 if not inner else 200, TW, head, '900', 128 if not inner else 92, '#FFFFFF', align, 4, 1.22, 60)
-        d.rectangle([M, y + 40, M + 140, y + 52] if align == 'left' else [W // 2 - 70, y + 40, W // 2 + 70, y + 52], fill=hexc('#FFFFFF'))
-        block(d, M, y + 100, TW, sub, '500', 48, '#FFE9EC', align, 6 if inner else 4, 1.42)
-        d.rectangle([0, 1040, W, 1350], fill=hexc('#0E1B33'))
+        y = block(d, M, 140 if not inner else 190, TW, head, '900', 124 if not inner else 90, '#FFFFFF', align, 4, 1.22, 60)
+        d.rectangle([M, y + 36, M + 140, y + 48] if align == 'left' else [W // 2 - 70, y + 36, W // 2 + 70, y + 48], fill=hexc('#FFFFFF'))
+        block(d, M, y + 92, TW, sub, '500', 46, '#FFE9EC', align, 6 if inner else 4, 1.42)
+        d.rectangle([0, 990, W, H], fill=hexc('#0E1B33'))
         if tag:
-            tag_in_box(d, M, 1080, TW, 100, tag, '#FFFFFF', '700', 32, 'center' if align == 'center' else 'left')
-        block(d, M, 1225, TW, foot, '400', 28, '#BEC8DA', align, 2, 1.3, 22)
+            tag_in_box(d, M, 1010, TW, 90, tag, '#FFFFFF', '700', 30, 'center' if align == 'center' else 'left')
+        sig_bar(img, d, M, ('#FFFFFF', '#E6C77A', '#BEC8DA', GOLD), divider='#2B3B5C', note=note)
         number('#FFFFFF')
     elif st == 'S4':
         d.rectangle([0, 0, W, H], fill=hexc('#0F4C5C'))
-        bx0, by0, bx1 = 70, 150, W - 70
-        f, lines, size = fit(d, head, '800', 90, bx1 - bx0 - 120, 4, 44)
+        bx0, by0, bx1 = 70, 140, W - 70
+        f, lines, size = fit(d, head, '800', 88, bx1 - bx0 - 120, 4, 44)
         step = int(size * 1.3)
         by1 = by0 + 90 + step * len(lines)
         d.rounded_rectangle([bx0, by0, bx1, by1], radius=60, fill=hexc('#DDEFE8'))
         tx = bx0 + 120 if align == 'left' else bx0 + 60
         d.polygon([(tx, by1 - 2), (tx + 90, by1 - 2), (tx + 10, by1 + 90)], fill=hexc('#DDEFE8'))
         block(d, bx0 + 60, by0 + 40, bx1 - bx0 - 120, head, '800', size, '#0B2F38', align, 4, 1.3, 44)
-        block(d, M, by1 + 140, TW, sub, '400', 46, '#FFFFFF', align, 6 if inner else 4, 1.45)
+        block(d, M, by1 + 130, TW, sub, '400', 44, '#FFFFFF', align, 6 if inner else 4, 1.45)
         if tag:
-            pill(d, M, 1030, TW, 92, outline='#DDEFE8', width=3)
-            tag_in_box(d, M, 1030, TW, 92, tag, '#DDEFE8', '600')
-        block(d, M, 1190, TW, foot, '400', 28, '#BFE3D8', align, 2, 1.3, 22)
+            pill(d, M, 1008, TW, 90, outline='#DDEFE8', width=3)
+            tag_in_box(d, M, 1008, TW, 90, tag, '#DDEFE8', '600')
+        sig_bar(img, d, M, ('#FFFFFF', '#DDEFE8', '#BFE3D8', '#DDEFE8'), divider='#2E6B7A', note=note)
         number('#DDEFE8')
     elif st == 'S5':
         if not inner:
-            d.rectangle([0, 0, W, 700], fill=hexc('#E9DCC4'))
-            d.ellipse([W - 330, 70, W - 130, 270], fill=hexc('#F4EEE2'))
-            motif(d, motif_kind, W // 2, 380, 250, '#0E1B33', '#A6303E', '#F7F1E6')
-            top = 750
+            d.rectangle([0, 0, W, 560], fill=hexc('#E9DCC4'))
+            d.ellipse([W - 300, 60, W - 120, 240], fill=hexc('#F4EEE2'))
+            motif(d, motif_kind, W // 2, 310, 210, '#0E1B33', '#A6303E', '#F7F1E6')
+            top = 600
         else:
             d.rectangle([0, 0, W, 40], fill=hexc('#E9DCC4'))
-            top = 180
-        d.rectangle([0, 700 if not inner else 40, W, H], fill=hexc('#FFFFFF'))
-        y = block(d, M, top, TW, head, '800', 80, '#0E1B33', align, 3, 1.28, 44)
-        block(d, M, y + 26, TW, sub, '400', 40, '#5A6475', align, 7 if inner else 2, 1.42, 30)
+            top = 170
+        d.rectangle([0, 560 if not inner else 40, W, H], fill=hexc('#FFFFFF'))
+        y = block(d, M, top, TW, head, '800', 76, '#0E1B33', align, 3, 1.28, 44)
+        block(d, M, y + 24, TW, sub, '400', 40, '#5A6475', align, 7 if inner else 2, 1.42, 30)
         if tag:
-            pill(d, M, 1110, TW, 84, fill='#A6303E', r=16)
-            tag_in_box(d, M, 1110, TW, 84, tag, '#FFFFFF', '700', 28)
-        block(d, M, 1225, TW, foot, '400', 26, '#5A6475', align, 2, 1.3, 22)
+            pill(d, M, 1030, TW, 82, fill='#A6303E', r=16)
+            tag_in_box(d, M, 1030, TW, 82, tag, '#FFFFFF', '700', 28)
+        sig_bar(img, d, M, ('#0E1B33', '#A6303E', '#5A6475', GOLD), divider='#E2E5EA', note=note)
         number('#0E1B33')
     elif st == 'S6':
         d.rectangle([0, 0, W, H], fill=hexc('#F7F7F5'))
         d.rectangle([0, 0, 40, H], fill=hexc('#0E1B33'))
-        d.rectangle([0, H - 300, W, H], fill=hexc('#0E1B33'))
+        d.rectangle([0, 1130, W, H], fill=hexc('#0E1B33'))
         if hero and not inner:
-            size = 380
+            size = 340
             while size > 120 and d.textlength(hero, font=F('900', size)) > W - 2 * M:
                 size -= 20
             bb = d.textbbox((0, 0), hero, font=F('900', size))
-            d.text((M - bb[0], 80 - bb[1]), hero, font=F('900', size), fill=hexc('#A6303E'))
-            top = 80 + (bb[3] - bb[1]) + 50
+            d.text((M - bb[0], 70 - bb[1]), hero, font=F('900', size), fill=hexc('#A6303E'))
+            top = 70 + (bb[3] - bb[1]) + 50
         else:
-            top = 200
+            top = 190
         d.rectangle([M, top - 22, M + 120, top - 12], fill=hexc('#0E1B33'))
-        y = block(d, M, top + 10, TW, head, '800', 80, '#0E1B33', align, 4, 1.28, 40)
-        block(d, M, y + 26, TW, sub, '400', 42, '#4E5666', align, 7 if inner else 3, 1.42, 30)
+        y = block(d, M, top + 10, TW, head, '800', 78, '#0E1B33', align, 3, 1.28, 40)
+        block(d, M, y + 24, TW, sub, '400', 42, '#4E5666', align, 7 if inner else 3, 1.42, 30)
         if tag:
-            pill(d, M, H - 250, TW, 88, fill='#A6303E', r=14)
-            tag_in_box(d, M, H - 250, TW, 88, tag, '#FFFFFF', '700', 28)
-        block(d, M, H - 125, TW, foot, '400', 27, '#BEC8DA', align, 2, 1.3, 20)
+            pill(d, M, 1030, TW, 82, fill='#A6303E', r=14)
+            tag_in_box(d, M, 1030, TW, 82, tag, '#FFFFFF', '700', 28)
+        sig_bar(img, d, M, ('#FFFFFF', '#E6C77A', '#BEC8DA', GOLD), note=note)
         number('#A6303E')
     elif st == 'S7':
         d.rectangle([0, 0, W, H], fill=hexc('#0B1220'))
-        g = hexc('#C9A54C')
+        g = hexc(GOLD)
         d.rectangle([40, 40, W - 40, H - 40], outline=g, width=3)
         d.rectangle([56, 56, W - 56, H - 56], outline=g, width=1)
-        d.polygon([(W // 2, 150), (W // 2 + 16, 166), (W // 2, 182), (W // 2 - 16, 166)], fill=g)
-        y = block(d, 120, 250, W - 240, head, '700', 92, '#FFFFFF', 'center', 4, 1.32)
-        d.rectangle([W // 2 - 70, y + 40, W // 2 + 70, y + 44], fill=g)
-        block(d, 120, y + 90, W - 240, sub, '400', 44, '#E6D3A0', 'center', 6 if inner else 4, 1.45)
+        d.polygon([(W // 2, 140), (W // 2 + 16, 156), (W // 2, 172), (W // 2 - 16, 156)], fill=g)
+        y = block(d, 120, 230, W - 240, head, '700', 90, '#FFFFFF', 'center', 4, 1.32)
+        d.rectangle([W // 2 - 70, y + 36, W // 2 + 70, y + 40], fill=g)
+        block(d, 120, y + 84, W - 240, sub, '400', 42, '#E6D3A0', 'center', 6 if inner else 4, 1.45)
         if tag:
-            tag_in_box(d, 120, 1040, W - 240, 90, tag, '#C9A54C', '600', 30)
-        block(d, 120, 1170, W - 240, foot, '400', 27, '#E6D3A0', 'center', 2, 1.3, 20)
-        number('#C9A54C')
+            tag_in_box(d, 120, 990, W - 240, 86, tag, GOLD, '600', 29)
+        sig_bar(img, d, 120, ('#FFFFFF', GOLD, '#E6D3A0', GOLD), divider='#3A3420', divider_w=W - 240, note=note, top=1136)
+        number(GOLD)
     else:  # S8
         d.rectangle([0, 0, W, H], fill=hexc('#E8F1FA'))
         if not inner:
-            d.ellipse([W - 330, 60, W - 70, 320], fill=hexc('#E0644F'))
-            motif(d, motif_kind, W - 200, 190, 85, '#FFFFFF', '#FFFFFF', '#FFFFFF', line_only=True)
-        cy0 = 360 if not inner else 160
-        f, lines, size = fit(d, head, '800', 86, TW - 100, 4, 44)
+            d.ellipse([W - 320, 60, W - 80, 300], fill=hexc('#E0644F'))
+            motif(d, motif_kind, W - 200, 180, 78, '#FFFFFF', '#FFFFFF', '#FFFFFF', line_only=True)
+        cy0 = 340 if not inner else 150
+        f, lines, size = fit(d, head, '800', 84, TW - 100, 4, 44)
         step = int(size * 1.3)
         cy1 = cy0 + 100 + step * len(lines)
         d.rounded_rectangle([M - 20, cy0, W - M + 20, cy1], radius=36, fill=hexc('#FFFFFF'))
         block(d, M + 30, cy0 + 45, TW - 60, head, '800', size, '#123A6B', align, 4, 1.3, 44)
-        block(d, M, cy1 + 50, TW, sub, '400', 44, '#123A6B', align, 6 if inner else 4, 1.45)
+        block(d, M, cy1 + 44, TW, sub, '400', 42, '#123A6B', align, 6 if inner else 4, 1.45)
         if tag:
-            pill(d, M, 1060, TW, 88, fill='#123A6B')
-            tag_in_box(d, M, 1060, TW, 88, tag, '#FFFFFF', '700', 28)
-        block(d, M, 1195, TW, foot, '400', 27, '#4A6688', align, 2, 1.3, 22)
+            pill(d, M, 1030, TW, 84, fill='#123A6B')
+            tag_in_box(d, M, 1030, TW, 84, tag, '#FFFFFF', '700', 28)
+        sig_bar(img, d, M, ('#123A6B', '#E0644F', '#4A6688', '#123A6B'), divider='#C9D9EA', note=note)
         number('#123A6B')
     return img
 
