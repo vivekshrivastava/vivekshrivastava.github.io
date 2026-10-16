@@ -92,7 +92,7 @@ def tag_in_box(draw, x, y, w, h, text, color, weight='700', size=30, align='cent
 
 
 # ---------------------------------------------------------------- signature bar
-SIG_NAME = "अधिवक्ता विवेकानंद"
+SIG_NAME = "Adv. Vivekanand, Motihari"
 SIG_WEB = "www.vivekanandlawfirm.com"
 SIG_NOTE = "कानूनी जानकारी, कानूनी सलाह नहीं"
 SIG_TOP = 1160      # top of the portrait
