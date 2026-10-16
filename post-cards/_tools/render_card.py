@@ -128,6 +128,42 @@ def sig_bar(img, d, x, cols, divider=None, divider_w=None, note=None, top=None):
     d.text((tx, T + 56), SIG_WEB, font=F('600', 29), fill=hexc(web_c))
     d.text((tx, T + 98), note or SIG_NOTE, font=F('400', 23), fill=hexc(note_c))
 
+
+# ---------------------------------------------------------------- firm logo (top right)
+LOGO_W = 300            # logo width on the card
+LOGO_BG = '#0D1A2D'     # the logo's own navy background (website header)
+LOGO_RIGHT = 64         # gap from the right edge
+_logo = None
+
+
+def logo():
+    global _logo
+    if _logo is None:
+        import os
+        p = os.path.join(os.path.dirname(FONT_DIR.rstrip('/')), 'logo.png')
+        _logo = Image.open(p).convert('RGB') if os.path.exists(p) else False
+    return _logo
+
+
+def logo_tab(img, d, top=0, right=LOGO_RIGHT, edge='#C9A54C'):
+    """Firm logo on a navy tab hanging from the top edge (or from a frame line at `top`).
+    Returns (left x, bottom y) of the tab."""
+    lg = logo()
+    if not lg:
+        return W, top
+    lh = round(LOGO_W * lg.height / lg.width)
+    padx, pady = 24, 20
+    x1 = W - right
+    x0 = x1 - LOGO_W - 2 * padx
+    y1 = top + 2 * pady + lh
+    if top <= 0:   # flush with the top edge: hide the top corners above the canvas
+        d.rounded_rectangle([x0, -40, x1, y1], radius=22, fill=hexc(LOGO_BG), outline=hexc(edge), width=2)
+    else:
+        d.rounded_rectangle([x0, top, x1, y1], radius=22, fill=hexc(LOGO_BG), outline=hexc(edge), width=2,
+                            corners=(False, False, True, True))
+    img.paste(lg.resize((LOGO_W, lh), Image.LANCZOS), (x0 + padx, top + pady))
+    return x0, y1
+
 # ---------------------------------------------------------------- motifs (wordless)
 def motif(draw, kind, cx, cy, s, c1, c2, c3, line_only=False):
     """Simple flat shapes centred at (cx, cy) with scale s (~ half-size in px)."""
@@ -234,14 +270,16 @@ def render_page(st, pg, align, motif_kind, carousel, idx):
     TW = W - 2 * M
     GOLD = '#C9A54C'
 
-    def number(col):
+    def number(col, right=M, top=SIG_TOP):
+        # carousel page number sits bottom right, level with the signature
         if num:
             f = F('700', 30)
-            d.text((W - M - d.textlength(num, font=f), 70), num, font=f, fill=hexc(col))
+            d.text((W - right - d.textlength(num, font=f), top + 47), num, font=f, fill=hexc(col))
 
     if st == 'S1':
         d.rectangle([0, 0, W, H], fill=hexc('#0E1B33'))
         d.rectangle([0, 0, 22, H], fill=hexc('#A6303E'))
+        logo_tab(img, d)
         d.rectangle([M, 190, M + 130, 202], fill=hexc('#A6303E'))
         y = block(d, M, 250, TW, head, '800', 94, '#FFFFFF', align, 4, 1.3)
         block(d, M, y + 36, TW, sub, '400', 44, '#BEC8DA', align, 6 if inner else 4, 1.42)
@@ -256,6 +294,7 @@ def render_page(st, pg, align, motif_kind, carousel, idx):
         d.line([(60, 60), (170, 60)], fill=hexc('#C2892B'), width=10)
         d.line([(W - 60, H - 60), (W - 60, H - 170)], fill=hexc('#C2892B'), width=10)
         d.line([(W - 60, H - 60), (W - 170, H - 60)], fill=hexc('#C2892B'), width=10)
+        logo_tab(img, d)
         y = block(d, M, 230, TW, head, '700', 90, '#1F2633', align, 4, 1.32)
         rx = M if align == 'left' else (W - 160) // 2
         d.rectangle([rx, y + 30, rx + 160, y + 40], fill=hexc('#C2892B'))
@@ -267,7 +306,8 @@ def render_page(st, pg, align, motif_kind, carousel, idx):
         number('#C2892B')
     elif st == 'S3':
         d.rectangle([0, 0, W, H], fill=hexc('#A6303E'))
-        y = block(d, M, 140 if not inner else 190, TW, head, '900', 124 if not inner else 90, '#FFFFFF', align, 4, 1.22, 60)
+        logo_tab(img, d)
+        y = block(d, M, 180 if not inner else 200, TW, head, '900', 124 if not inner else 90, '#FFFFFF', align, 4, 1.22, 60)
         d.rectangle([M, y + 36, M + 140, y + 48] if align == 'left' else [W // 2 - 70, y + 36, W // 2 + 70, y + 48], fill=hexc('#FFFFFF'))
         block(d, M, y + 92, TW, sub, '500', 46, '#FFE9EC', align, 6 if inner else 4, 1.42)
         d.rectangle([0, 990, W, H], fill=hexc('#0E1B33'))
@@ -277,7 +317,8 @@ def render_page(st, pg, align, motif_kind, carousel, idx):
         number('#FFFFFF')
     elif st == 'S4':
         d.rectangle([0, 0, W, H], fill=hexc('#0F4C5C'))
-        bx0, by0, bx1 = 70, 140, W - 70
+        logo_tab(img, d)
+        bx0, by0, bx1 = 70, 178, W - 70
         f, lines, size = fit(d, head, '800', 88, bx1 - bx0 - 120, 4, 44)
         step = int(size * 1.3)
         by1 = by0 + 90 + step * len(lines)
@@ -294,13 +335,14 @@ def render_page(st, pg, align, motif_kind, carousel, idx):
     elif st == 'S5':
         if not inner:
             d.rectangle([0, 0, W, 560], fill=hexc('#E9DCC4'))
-            d.ellipse([W - 300, 60, W - 120, 240], fill=hexc('#F4EEE2'))
+            d.ellipse([110, 70, 290, 250], fill=hexc('#F4EEE2'))
             motif(d, motif_kind, W // 2, 310, 210, '#0E1B33', '#A6303E', '#F7F1E6')
             top = 600
         else:
             d.rectangle([0, 0, W, 40], fill=hexc('#E9DCC4'))
-            top = 170
+            top = 190
         d.rectangle([0, 560 if not inner else 40, W, H], fill=hexc('#FFFFFF'))
+        logo_tab(img, d)
         y = block(d, M, top, TW, head, '800', 76, '#0E1B33', align, 3, 1.28, 44)
         block(d, M, y + 24, TW, sub, '400', 40, '#5A6475', align, 7 if inner else 2, 1.42, 30)
         if tag:
@@ -312,13 +354,21 @@ def render_page(st, pg, align, motif_kind, carousel, idx):
         d.rectangle([0, 0, W, H], fill=hexc('#F7F7F5'))
         d.rectangle([0, 0, 40, H], fill=hexc('#0E1B33'))
         d.rectangle([0, 1130, W, H], fill=hexc('#0E1B33'))
+        lx0, ly1 = logo_tab(img, d)
         if hero and not inner:
+            # beside the logo tab if it fits there at a good size, otherwise below it at full width
+            avail = lx0 - M - 40
             size = 340
-            while size > 120 and d.textlength(hero, font=F('900', size)) > W - 2 * M:
+            while size > 200 and d.textlength(hero, font=F('900', size)) > avail:
                 size -= 20
+            hy = 70
+            if d.textlength(hero, font=F('900', size)) > avail:
+                size, hy = 300, ly1 + 40
+                while size > 120 and d.textlength(hero, font=F('900', size)) > W - 2 * M:
+                    size -= 20
             bb = d.textbbox((0, 0), hero, font=F('900', size))
-            d.text((M - bb[0], 70 - bb[1]), hero, font=F('900', size), fill=hexc('#A6303E'))
-            top = 70 + (bb[3] - bb[1]) + 50
+            d.text((M - bb[0], hy - bb[1]), hero, font=F('900', size), fill=hexc('#A6303E'))
+            top = hy + (bb[3] - bb[1]) + 50
         else:
             top = 190
         d.rectangle([M, top - 22, M + 120, top - 12], fill=hexc('#0E1B33'))
@@ -328,12 +378,13 @@ def render_page(st, pg, align, motif_kind, carousel, idx):
             pill(d, M, 1030, TW, 82, fill='#A6303E', r=14)
             tag_in_box(d, M, 1030, TW, 82, tag, '#FFFFFF', '700', 28)
         sig_bar(img, d, M, ('#FFFFFF', '#E6C77A', '#BEC8DA', GOLD), note=note)
-        number('#A6303E')
+        number('#E6C77A')
     elif st == 'S7':
         d.rectangle([0, 0, W, H], fill=hexc('#0B1220'))
         g = hexc(GOLD)
         d.rectangle([40, 40, W - 40, H - 40], outline=g, width=3)
         d.rectangle([56, 56, W - 56, H - 56], outline=g, width=1)
+        logo_tab(img, d, top=56, right=84)
         d.polygon([(W // 2, 140), (W // 2 + 16, 156), (W // 2, 172), (W // 2 - 16, 156)], fill=g)
         y = block(d, 120, 230, W - 240, head, '700', 90, '#FFFFFF', 'center', 4, 1.32)
         d.rectangle([W // 2 - 70, y + 36, W // 2 + 70, y + 40], fill=g)
@@ -341,13 +392,14 @@ def render_page(st, pg, align, motif_kind, carousel, idx):
         if tag:
             tag_in_box(d, 120, 990, W - 240, 86, tag, GOLD, '600', 29)
         sig_bar(img, d, 120, ('#FFFFFF', GOLD, '#E6D3A0', GOLD), divider='#3A3420', divider_w=W - 240, note=note, top=1136)
-        number(GOLD)
+        number(GOLD, right=120, top=1136)
     else:  # S8
         d.rectangle([0, 0, W, H], fill=hexc('#E8F1FA'))
+        logo_tab(img, d)
         if not inner:
-            d.ellipse([W - 320, 60, W - 80, 300], fill=hexc('#E0644F'))
-            motif(d, motif_kind, W - 200, 180, 78, '#FFFFFF', '#FFFFFF', '#FFFFFF', line_only=True)
-        cy0 = 340 if not inner else 150
+            d.ellipse([80, 60, 320, 300], fill=hexc('#E0644F'))
+            motif(d, motif_kind, 200, 180, 78, '#FFFFFF', '#FFFFFF', '#FFFFFF', line_only=True)
+        cy0 = 340 if not inner else 185
         f, lines, size = fit(d, head, '800', 84, TW - 100, 4, 44)
         step = int(size * 1.3)
         cy1 = cy0 + 100 + step * len(lines)
