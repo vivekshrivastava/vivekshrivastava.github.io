@@ -7,6 +7,7 @@ in Noto Sans Devanagari and published to Facebook, Instagram, LinkedIn and Googl
 - `_tools/render_card.py` - the renderer (8 design styles, S1 to S8)
 - `_tools/fonts/` - Noto Sans Devanagari (SIL Open Font License, see OFL.txt)
 - `_tools/logo.png` - the firm logo, drawn on a navy tab in the top-right corner of every card
+- `_tools/logo-navy.png` - the same logo on a navy plate (10:3), for designs built in Canva
 - `_tools/portrait.png` - the portrait used in the signature bar at the bottom of every card
 - `_samples/` - one sample card per design style
 

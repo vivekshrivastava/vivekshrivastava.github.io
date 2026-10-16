@@ -131,7 +131,7 @@ def sig_bar(img, d, x, cols, divider=None, divider_w=None, note=None, top=None):
 
 # ---------------------------------------------------------------- firm logo (top right)
 LOGO_W = 300            # logo width on the card
-LOGO_BG = '#0D1A2D'     # the logo's own navy background (website header)
+LOGO_BG = '#101F35'     # navy of the logo's shield, so the shield blends into the tab
 LOGO_RIGHT = 64         # gap from the right edge
 _logo = None
 
@@ -141,7 +141,7 @@ def logo():
     if _logo is None:
         import os
         p = os.path.join(os.path.dirname(FONT_DIR.rstrip('/')), 'logo.png')
-        _logo = Image.open(p).convert('RGB') if os.path.exists(p) else False
+        _logo = Image.open(p).convert('RGBA') if os.path.exists(p) else False   # transparent PNG
     return _logo
 
 
@@ -161,7 +161,8 @@ def logo_tab(img, d, top=0, right=LOGO_RIGHT, edge='#C9A54C'):
     else:
         d.rounded_rectangle([x0, top, x1, y1], radius=22, fill=hexc(LOGO_BG), outline=hexc(edge), width=2,
                             corners=(False, False, True, True))
-    img.paste(lg.resize((LOGO_W, lh), Image.LANCZOS), (x0 + padx, top + pady))
+    small = lg.resize((LOGO_W, lh), Image.LANCZOS)
+    img.paste(small, (x0 + padx, top + pady), small)
     return x0, y1
 
 # ---------------------------------------------------------------- motifs (wordless)
