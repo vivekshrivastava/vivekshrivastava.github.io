@@ -6,6 +6,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.webkit.ConsoleMessage
+import android.webkit.RenderProcessGoneDetail
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
@@ -66,6 +71,27 @@ class MainActivity : AppCompatActivity() {
                 openExternally(request.url)
                 return true
             }
+
+            override fun onPageFinished(view: WebView, url: String) {
+                Log.i(TAG, "Page loaded: $url")
+            }
+
+            override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
+                if (request.isForMainFrame) Log.e(TAG, "Page failed: ${error.errorCode} ${error.description} (${request.url})")
+            }
+
+            // If the system kills the WebView renderer, restart the screen instead of crashing the app.
+            override fun onRenderProcessGone(view: WebView, detail: RenderProcessGoneDetail): Boolean {
+                Log.w(TAG, "WebView renderer gone (crashed=${detail.didCrash()}); recreating")
+                recreate()
+                return true
+            }
+        }
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onConsoleMessage(message: ConsoleMessage): Boolean {
+                Log.d(TAG, "JS ${message.messageLevel()}: ${message.message()} (${message.sourceId()}:${message.lineNumber()})")
+                return true
+            }
         }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -98,6 +124,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
+        private const val TAG = "VivekanandLaw"
         private const val APP_HOST = "appassets.androidplatform.net"
         private const val START_URL = "https://$APP_HOST/assets/www/index.html"
     }
